@@ -1,0 +1,61 @@
+<app-header-style-two></app-header-style-two>
+
+<div
+    class="page-title-area"
+    style="background-image: url(images/page-title/page-title1.jpg);"
+>
+    <div class="container">
+        <div class="page-title-content">
+            <ul>
+                <li><a routerLink="/">Home</a></li>
+                <li>Learning Centre</li>
+            </ul>
+            <h2>Elikia Learning Centre MVP</h2>
+        </div>
+    </div>
+</div>
+
+<section
+    class="lms-hub-area ptb-100"
+    [class.dark-lms-hub-area]="themeService.isDark()"
+>
+    <div class="container">
+        <div class="lms-layout">
+            <aside class="sidebar">
+                <div class="brand">
+                    <p class="eyebrow">Elikia French4All</p>
+                    <h3>Learning Centre Demo</h3>
+                    <p class="subtitle">A modern workflow for Admin, Tutors, and Parents, aligned with Elikia branding.</p>
+                </div>
+
+                <nav class="nav-links">
+                    <a
+                        *ngFor="let item of navItems"
+                        [routerLink]="item.route"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                    >
+                        {{ item.label }}
+                    </a>
+                </nav>
+
+                <div class="pill-group">
+                    <span>Mock Data</span>
+                    <span>No Auth</span>
+                    <span>No Backend</span>
+                </div>
+            </aside>
+
+            <main class="content-area">
+                <header class="topbar">
+                    <h2>Learning Centre Management System</h2>
+                    <a routerLink="admin" class="home-link">Back to overview</a>
+                </header>
+
+                <div class="page-host">
+                    <router-outlet />
+                </div>
+            </main>
+        </div>
+    </div>
+</section>

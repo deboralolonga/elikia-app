@@ -34,7 +34,7 @@
                 color: var(--paragraphColor);
                 position: relative;
                 padding-left: 25px;
-    
+
                 i {
                     font-size: 18px;
                     position: absolute;
@@ -45,7 +45,7 @@
                 a {
                     display: inline-block;
                     color: var(--paragraphColor);
-    
+
                     &:hover, &:focus {
                         color: var(--mainColor);
                     }
@@ -65,7 +65,7 @@
             li {
                 display: inline-block;
                 margin-right: 5px;
-    
+
                 a {
                     width: 30px;
                     height: 30px;
@@ -75,7 +75,7 @@
                     font-size: 18px;
                     position: relative;
                     border-radius: 2px;
-    
+
                     i {
                         position: absolute;
                         left: 0;
@@ -178,6 +178,59 @@
             size: 22px;
             weight: 600;
         };
+    }
+    .role-card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+        margin: {
+            top: 20px;
+            bottom: 30px;
+        };
+
+        .role-card {
+            border: 1px solid #eeeeee;
+            border-radius: 5px;
+            background-color: var(--whiteColor);
+            padding: 18px;
+
+            h4 {
+                margin-bottom: 10px;
+                font: {
+                    size: 18px;
+                    weight: 600;
+                };
+            }
+            p {
+                margin-bottom: 12px;
+                min-height: 68px;
+            }
+            a {
+                display: inline-block;
+                font: {
+                    size: 14px;
+                    weight: 600;
+                };
+                color: var(--mainColor);
+
+                &:hover {
+                    color: var(--blackColor);
+                }
+            }
+        }
+    }
+    .elikia-activity-list {
+        margin: 0;
+        padding-left: 20px;
+
+        li {
+            margin-bottom: 8px;
+            color: var(--paragraphColor);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
     .recent-orders-table {
         .table {
@@ -342,7 +395,7 @@
                 font-size: 13.5px;
                 color: var(--paragraphColor);
                 display: inline-block;
-                
+
                 em {
                     margin-top: 5px;
                     display: inline-block;
@@ -426,22 +479,44 @@
         }
     }
 }
+
+@media only screen and (max-width: 991px) {
+    .myDashboard-content {
+        .role-card-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .myDashboard-content {
+        .role-card-grid {
+            grid-template-columns: 1fr;
+
+            .role-card {
+                p {
+                    min-height: auto;
+                }
+            }
+        }
+    }
+}
 .dark-my-dashboard-area {
     .myDashboard-profile {
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         background-color: var(--blackColor);
-   
+
         .profile-content {
             .contact-info {
                 li {
                     color: #a1a4ad;
-        
+
                     i {
                         color: var(--whiteColor);
                     }
                     a {
                         color: #a1a4ad;
-        
+
                         &:hover, &:focus {
                             color: var(--mainColor);
                         }
@@ -452,7 +527,7 @@
                 li {
                     a {
                         background-color: #000000;
-                        
+
                         &:hover, &:focus {
                             background-color: var(--mainColor);
                         }
@@ -464,12 +539,12 @@
     .myDashboard-navigation {
         ul {
             border-bottom-color: #3a3737;
-    
+
             li {
                 a {
                     color: var(--whiteColor);
                     border-color: #3a3737;
-                    
+
                     &.active, &:hover {
                         color: var(--whiteColor);
                         border-color: var(--mainColor);
@@ -500,10 +575,10 @@
                         border-color: #3a3737;
                         color: var(--whiteColor);
                         background-color: transparent;
-    
+
                         .view-button {
                             background-color: #000000;
-                            
+
                             &:hover {
                                 background-color: var(--mainColor);
                             }
@@ -526,10 +601,10 @@
                         border-color: #3a3737;
                         color: var(--whiteColor);
                         background-color: transparent;
-    
+
                         .view-button {
                             background-color: #000000;
-                            
+
                             &:hover {
                                 background-color: var(--mainColor);
                             }
@@ -555,7 +630,7 @@
 
                         .downloads-button {
                             background-color: #000000;
-                            
+
                             &:hover {
                                 background-color: var(--mainColor);
                             }
@@ -567,7 +642,7 @@
         .edit-account {
             background-color: var(--blackColor);
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    
+
             .form-group {
                 span {
                     color: #a1a4ad;
@@ -581,7 +656,7 @@
             .addresses-title {
                 .edit {
                     background: #000000;
-                    
+
                     &:hover {
                         background-color: var(--mainColor);
                     }

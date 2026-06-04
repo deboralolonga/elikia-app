@@ -1,0 +1,74 @@
+<section class="tutor-dashboard" *ngIf="tutor as profile">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Tutor Dashboard</p>
+            <h3>Welcome back, {{ profile.name }}</h3>
+        </div>
+        <span class="status">{{ profile.status }}</span>
+    </div>
+
+    <div class="stats-grid">
+        <article>
+            <p>My Students</p>
+            <h4>{{ myStudents.length }}</h4>
+        </article>
+        <article>
+            <p>My Schedule</p>
+            <h4>{{ mySchedule.length }}</h4>
+        </article>
+        <article>
+            <p>Hours Worked This Week</p>
+            <h4>{{ hoursWorkedThisWeek }}</h4>
+        </article>
+    </div>
+
+    <p class="action-note" *ngIf="actionNote">{{ actionNote }}</p>
+
+    <div class="content-grid">
+        <article class="panel">
+            <h4>My Students</h4>
+            <div class="student-grid">
+                <div class="student-card" *ngFor="let student of myStudents">
+                    <h5>{{ student.name }}</h5>
+                    <p>{{ student.level }} • Age {{ student.age }}</p>
+                    <span>{{ student.focusArea }}</span>
+                    <button type="button" (click)="sendProgressUpdate(student.id)">
+                        {{ studentUpdateState[student.id] === 'Sent' ? 'Update Sent' : 'Send Progress Update' }}
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <article class="panel">
+            <h4>My Schedule</h4>
+            <ul class="schedule-list">
+                <li *ngFor="let session of mySchedule">
+                    <strong>{{ session.subject }}</strong>
+                    <span>{{ studentName(session.studentId) }}</span>
+                    <span>{{ dateLabel(session.startAt) }}</span>
+                    <span>{{ session.location }}</span>
+                    <span class="session-state" [class.warn]="sessionActionState[session.id] === 'Reschedule Requested'">
+                        {{ sessionActionState[session.id] }}
+                    </span>
+                    <div class="action-buttons">
+                        <button
+                            type="button"
+                            (click)="markSessionCompleted(session.id)"
+                            [disabled]="sessionActionState[session.id] === 'Completed'"
+                        >
+                            Mark Completed
+                        </button>
+                        <button
+                            type="button"
+                            class="secondary"
+                            (click)="requestReschedule(session.id)"
+                            [disabled]="sessionActionState[session.id] === 'Completed'"
+                        >
+                            Request Reschedule
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </article>
+    </div>
+</section>

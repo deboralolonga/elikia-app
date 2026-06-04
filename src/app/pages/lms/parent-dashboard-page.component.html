@@ -1,0 +1,84 @@
+<section class="parent-dashboard" *ngIf="parent as profile">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Parent Dashboard</p>
+            <h3>Hello {{ profile.name }}</h3>
+        </div>
+        <div class="contact">{{ profile.phone }} • {{ profile.email }}</div>
+    </div>
+
+    <div class="stats-grid">
+        <article>
+            <p>My Children</p>
+            <h4>{{ myChildren.length }}</h4>
+        </article>
+        <article>
+            <p>Assigned Tutors</p>
+            <h4>{{ assignedTutorIds.length }}</h4>
+        </article>
+        <article>
+            <p>Upcoming Sessions</p>
+            <h4>{{ upcomingSessions.length }}</h4>
+        </article>
+    </div>
+
+    <p class="action-note" *ngIf="parentActionNote">{{ parentActionNote }}</p>
+
+    <div class="content-grid">
+        <article class="panel">
+            <h4>My Children</h4>
+            <div class="children-list">
+                <div class="child-item" *ngFor="let child of myChildren">
+                    <h5>{{ child.name }}</h5>
+                    <p>{{ child.level }} • {{ child.focusArea }}</p>
+                    <span>Assigned Tutor: {{ tutorName(child.tutorId) }}</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="panel">
+            <h4>Upcoming Sessions</h4>
+            <ul class="session-list">
+                <li *ngFor="let session of upcomingSessions">
+                    <strong>{{ session.subject }}</strong>
+                    <span>{{ studentName(session.studentId) }} with {{ tutorName(session.tutorId) }}</span>
+                    <span>{{ dateLabel(session.startAt) }} • {{ session.location }}</span>
+                    <span class="state" [class.warn]="upcomingActionState[session.id] === 'Makeup Requested'">
+                        {{ upcomingActionState[session.id] }}
+                    </span>
+                    <div class="action-buttons">
+                        <button
+                            type="button"
+                            (click)="confirmAttendance(session.id)"
+                            [disabled]="upcomingActionState[session.id] === 'Attendance Confirmed'"
+                        >
+                            Confirm Attendance
+                        </button>
+                        <button
+                            type="button"
+                            class="secondary"
+                            (click)="requestMakeup(session.id)"
+                        >
+                            Request Makeup
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </article>
+    </div>
+
+    <article class="panel history">
+        <h4>Session History</h4>
+        <ul class="history-list">
+            <li *ngFor="let session of sessionHistory">
+                <span>{{ dateLabel(session.startAt) }}</span>
+                <strong>{{ session.subject }}</strong>
+                <span>{{ studentName(session.studentId) }}</span>
+                <span>{{ tutorName(session.tutorId) }}</span>
+                <button type="button" (click)="downloadSessionReport(session.id)">
+                    {{ reportState[session.id] === 'Downloaded' ? 'Report Downloaded' : 'Download Report' }}
+                </button>
+            </li>
+        </ul>
+    </article>
+</section>

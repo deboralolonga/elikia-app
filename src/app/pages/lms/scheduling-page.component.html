@@ -1,0 +1,45 @@
+<section class="scheduling-page">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Scheduling</p>
+            <h3>Weekly timetable and assignments</h3>
+        </div>
+        <div class="summary">{{ upcoming.length }} upcoming sessions</div>
+    </div>
+
+    <div class="week-grid">
+        <article class="day-card" *ngFor="let day of weekdays">
+            <div class="day-head">
+                <h4>{{ day }}</h4>
+                <span>{{ sessionsByDay(day).length }} sessions</span>
+            </div>
+
+            <div class="session-list" *ngIf="sessionsByDay(day).length > 0; else emptyDay">
+                <div class="session-item" *ngFor="let session of sessionsByDay(day)">
+                    <h5>{{ session.subject }}</h5>
+                    <p>{{ studentName(session.studentId) }} with {{ tutorName(session.tutorId) }}</p>
+                    <div class="meta">
+                        <span>{{ dateLabel(session.startAt) }}</span>
+                        <span>{{ session.location }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #emptyDay>
+                <p class="empty">No sessions assigned.</p>
+            </ng-template>
+        </article>
+    </div>
+
+    <article class="upcoming-panel">
+        <h4>Upcoming Session Queue</h4>
+        <ul>
+            <li *ngFor="let session of upcoming">
+                <span>{{ dateLabel(session.startAt) }}</span>
+                <strong>{{ tutorName(session.tutorId) }}</strong>
+                <span>{{ studentName(session.studentId) }}</span>
+                <span>{{ session.subject }}</span>
+            </li>
+        </ul>
+    </article>
+</section>

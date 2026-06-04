@@ -45,6 +45,13 @@ import { CoursesGstcThreePageComponent } from './pages/courses-gstc-three-page/c
 import { CoursesGstcFourPageComponent } from './pages/courses-gstc-four-page/courses-gstc-four-page.component';
 import { CoursesDetailsPageComponent } from './pages/courses-details-page/courses-details-page.component';
 import { MyDashboardPageComponent } from './pages/my-dashboard-page/my-dashboard-page.component';
+import { LmsShellPageComponent } from './pages/lms/lms-shell-page.component';
+import { AdminDashboardPageComponent } from './pages/lms/admin-dashboard-page.component';
+import { TutorsPageComponent } from './pages/lms/tutors-page.component';
+import { StudentsPageComponent } from './pages/lms/students-page.component';
+import { SchedulingPageComponent } from './pages/lms/scheduling-page.component';
+import { TutorDashboardPageComponent } from './pages/lms/tutor-dashboard-page.component';
+import { ParentDashboardPageComponent } from './pages/lms/parent-dashboard-page.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { DownloadsPageComponent } from './pages/downloads-page/downloads-page.component';
 import { EditAddressPageComponent } from './pages/edit-address-page/edit-address-page.component';
@@ -108,6 +115,19 @@ export const routes: Routes = [
     {path: 'courses-4-columns-style-3', component: CoursesGstcFourPageComponent},
     {path: 'single-course', component: CoursesDetailsPageComponent},
     {path: 'my-dashboard', component: MyDashboardPageComponent},
+    {
+        path: 'learning-centre',
+        component: LmsShellPageComponent,
+        children: [
+            { path: '', redirectTo: 'admin', pathMatch: 'full' },
+            { path: 'admin', component: AdminDashboardPageComponent },
+            { path: 'tutors', component: TutorsPageComponent },
+            { path: 'students', component: StudentsPageComponent },
+            { path: 'scheduling', component: SchedulingPageComponent },
+            { path: 'tutor-dashboard', component: TutorDashboardPageComponent },
+            { path: 'parent-dashboard', component: ParentDashboardPageComponent }
+        ]
+    },
     {path: 'orders', component: OrdersPageComponent},
     {path: 'downloads', component: DownloadsPageComponent},
     {path: 'edit-address', component: EditAddressPageComponent},

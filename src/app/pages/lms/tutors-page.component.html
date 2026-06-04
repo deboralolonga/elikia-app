@@ -1,0 +1,59 @@
+<section class="tutors-page">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Tutors</p>
+            <h3>Teaching team overview</h3>
+        </div>
+        <div class="summary">{{ tutors.length }} tutors • {{ totalAssigned }} assigned students</div>
+    </div>
+
+    <div class="cards-grid">
+        <article class="tutor-card" *ngFor="let tutor of tutors">
+            <div class="card-head">
+                <div>
+                    <h4>{{ tutor.name }}</h4>
+                    <p>{{ tutor.specialties.join(' • ') }}</p>
+                </div>
+                <span class="status" [class.on-leave]="tutor.status === 'On Leave'">{{ tutor.status }}</span>
+            </div>
+
+            <div class="detail-block">
+                <h5>Availability</h5>
+                <div class="chips">
+                    <span *ngFor="let slot of tutor.availability">{{ slot }}</span>
+                </div>
+            </div>
+
+            <div class="detail-block">
+                <h5>Assigned students</h5>
+                <ul>
+                    <li *ngFor="let name of assignedStudents(tutor.assignedStudentIds)">{{ name }}</li>
+                </ul>
+            </div>
+        </article>
+    </div>
+
+    <div class="table-panel">
+        <h4>Tutor Capacity Table</h4>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tutor</th>
+                        <th>Students</th>
+                        <th>Hours/Week</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let tutor of tutors">
+                        <td>{{ tutor.name }}</td>
+                        <td>{{ tutor.assignedStudentIds.length }}</td>
+                        <td>{{ tutor.weeklyHours }}</td>
+                        <td>{{ tutor.status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
