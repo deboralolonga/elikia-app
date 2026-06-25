@@ -1,0 +1,40 @@
+<section class="students-page">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Students</p>
+            <h3>Student and family records</h3>
+        </div>
+        <div class="summary">{{ students.length }} students • {{ parentsCount }} parents • {{ tutorsCount }} tutors</div>
+    </div>
+
+    <article class="table-panel">
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Level</th>
+                        <th>Focus Area</th>
+                        <th>Parent Information</th>
+                        <th>Assigned Tutor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of students">
+                        <td>
+                            <strong>{{ student.name }}</strong>
+                            <p>Age {{ student.age }}</p>
+                        </td>
+                        <td>{{ student.level }}</td>
+                        <td>{{ student.focusArea }}</td>
+                        <td>
+                            <strong>{{ parentName(student.parentId) }}</strong>
+                            <p>{{ parentContact(student.parentId) }}</p>
+                        </td>
+                        <td>{{ tutorName(student.tutorId) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>

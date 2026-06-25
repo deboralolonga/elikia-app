@@ -5,7 +5,7 @@ import { LanguageService } from '../language/language.service';
 
 @Component({
     selector: 'app-instructors-style-two',
-    imports: [RouterLink],
+    imports: [],
     templateUrl: './instructors-style-two.component.html',
     styleUrls: ['./instructors-style-two.component.scss']
 })

@@ -9,7 +9,7 @@
                         <li>
                             <i class="bx bx-phone-call"></i>
                             <span>{{ lang.t('contactSupport') }}</span>
-                            <a href="tel:+27810772353">+27 810 77 2353</a>
+                            <a href="https://wa.me/+27810772353">+27 810 77 2353</a>
                         </li>
                         <li>
                             <i class="bx bx-map"></i>
@@ -28,11 +28,19 @@
 
                 <div class="col-lg-4">
                     <div class="top-header-btn">
-                        <a routerLink="/login" class="default-btn"
-                            ><i class="bx bx-log-in icon-arrow before"></i
-                            ><span class="label">{{ lang.t('login') }}</span
-                            ><i class="bx bx-log-in icon-arrow after"></i
-                        ></a>
+                        @if (!isAuthenticated) {
+                            <a routerLink="/login" class="default-btn"
+                                ><i class="bx bx-log-in icon-arrow before"></i
+                                ><span class="label">{{ lang.t('login') }}</span
+                                ><i class="bx bx-log-in icon-arrow after"></i
+                            ></a>
+                        } @else {
+                            <button type="button" class="default-btn" (click)="onLogout()"
+                                ><i class="bx bx-log-out icon-arrow before"></i
+                                ><span class="label">Logout</span
+                                ><i class="bx bx-log-out icon-arrow after"></i
+                            ></button>
+                        }
                     </div>
                 </div>
             </div>
@@ -221,15 +229,17 @@
                                 >{{ lang.t('ourPrograms') }}</a
                             >
                         </li>
-                         <!-- <li class="nav-item">
-                            <a
-                                routerLink="/my-dashboard"
-                                class="nav-link"
-                                routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact: true }"
-                                >{{ lang.t('dashboard') }}</a
-                            >
-                        </li> -->
+                        @if (isAuthenticated) {
+                            <li class="nav-item">
+                                <a
+                                    [routerLink]="dashboardLink"
+                                    class="nav-link"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: true }"
+                                    >{{ lang.t('dashboard') }}</a
+                                >
+                            </li>
+                        }
                         <li class="nav-item">
                             <a
                                 routerLink="/contact"
@@ -239,6 +249,26 @@
                                 >{{ lang.t('contact') }}</a
                             >
                         </li>
+                        @if (!isAuthenticated) {
+                            <li class="nav-item mobile-auth-item">
+                                <a
+                                    routerLink="/login"
+                                    class="nav-link"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: true }"
+                                    >{{ lang.t('login') }}</a
+                                >
+                            </li>
+                        } @else {
+                            <li class="nav-item mobile-auth-item">
+                                <a
+                                    href="#"
+                                    class="nav-link"
+                                    (click)="onLogout(); $event.preventDefault()"
+                                    >Logout</a
+                                >
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div class="others-option">

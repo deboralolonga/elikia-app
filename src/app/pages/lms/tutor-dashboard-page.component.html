@@ -1,0 +1,195 @@
+<section class="tutor-dashboard" *ngIf="tutor as profile">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Tutor Dashboard</p>
+            <h3>Welcome back, {{ profile.name }}</h3>
+            <div class="viewer-badge">
+                <span class="label">Signed in as</span>
+                <strong>{{ signedInUserName }}</strong>
+                <span class="role">{{ signedInRole }}</span>
+            </div>
+        </div>
+        <span class="status">{{ profile.status }}</span>
+    </div>
+
+    <div class="stats-grid">
+        <article>
+            <p>My Students</p>
+            <h4>{{ myStudents.length }}</h4>
+        </article>
+        <article>
+            <p>My Schedule</p>
+            <h4>{{ mySchedule.length }}</h4>
+        </article>
+        <article>
+            <p>Hours Worked This Week</p>
+            <h4>{{ hoursWorkedThisWeek }}</h4>
+        </article>
+    </div>
+
+    <p class="action-note" *ngIf="actionNote">{{ actionNote }}</p>
+
+    <article class="panel monthly-summary-panel">
+        <div class="panel-head">
+            <h4>Monthly Hours and Payroll</h4>
+            <label>
+                Period
+                <select [ngModel]="selectedMonthKey" (ngModelChange)="onMonthChange($event)">
+                    <option *ngFor="let month of monthOptions" [value]="month">{{ monthLabel(month) }}</option>
+                </select>
+            </label>
+        </div>
+        <div class="summary-grid">
+            <div>
+                <p>Hours done</p>
+                <strong>{{ monthlyCompletedHours }} h</strong>
+            </div>
+            <div>
+                <p>Accumulated</p>
+                <strong>{{ formatCurrency(monthlyPayrollAccumulated) }}</strong>
+            </div>
+            <div>
+                <p>Pending payroll</p>
+                <strong>{{ formatCurrency(monthlyPayrollPending) }}</strong>
+            </div>
+        </div>
+    </article>
+
+    <article class="panel weekly-calendar-panel">
+        <h4>Weekly Calendar</h4>
+        <div class="calendar-grid">
+            <div class="day-column" *ngFor="let day of weeklyCalendar">
+                <div class="day-head">
+                    <strong>{{ day.label }}</strong>
+                    <span>{{ day.dateLabel }}</span>
+                </div>
+                <div class="day-body" *ngIf="day.sessions.length; else noTutorSession">
+                    <div class="session-card" *ngFor="let session of day.sessions">
+                        <p class="time">{{ sessionTime(session.startAt) }}</p>
+                        <p class="topic">{{ session.subject }}</p>
+                        <span>{{ studentName(session.studentId) }}</span>
+                    </div>
+                </div>
+                <ng-template #noTutorSession>
+                    <p class="empty-day">No sessions</p>
+                </ng-template>
+            </div>
+        </div>
+    </article>
+
+    <article class="panel tutor-ops-panel">
+        <h4>Online Class Materials</h4>
+        <ul class="ops-list">
+            <li *ngFor="let session of myOnlineSessions">
+                <strong>{{ session.subject }}</strong>
+                <span>{{ dateLabel(session.startAt) }}</span>
+                <small>Support de cours (material): Bientot disponible</small>
+            </li>
+        </ul>
+    </article>
+
+    <div class="content-grid">
+        <article class="panel">
+            <h4>My Students</h4>
+            <div class="student-grid">
+                <div class="student-card" *ngFor="let student of myStudents">
+                    <h5>{{ student.name }}</h5>
+                    <p>{{ student.level }} • Age {{ student.age }}</p>
+                    <span>{{ student.focusArea }}</span>
+                    <button type="button" (click)="sendProgressUpdate(student.id)">
+                        {{ studentUpdateState[student.id] === 'Sent' ? 'Update Sent' : 'Send Progress Update' }}
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <article class="panel">
+            <h4>My Schedule</h4>
+            <ul class="schedule-list">
+                <li *ngFor="let session of mySchedule">
+                    <strong>{{ session.subject }}</strong>
+                    <span>{{ studentName(session.studentId) }}</span>
+                    <span>{{ dateLabel(session.startAt) }}</span>
+                    <span>{{ session.location }}</span>
+                    <span class="session-state" [class.warn]="sessionActionState[session.id] === 'Reschedule Requested'">
+                        {{ sessionActionState[session.id] }}
+                    </span>
+                    <span class="clock-state">Session clock: {{ sessionClockStatus(session.id) }}</span>
+                    <span class="clock-hours">Tracked hours: {{ trackedSessionHours(session.id) }} h</span>
+                    <span class="attendance-state">Attendance: {{ attendanceStatus(session.id) }}</span>
+                    <small class="attendance-note">{{ attendanceNote(session.id) }}</small>
+                    <div class="qr-scan-box">
+                        <label>Scan parent QR code</label>
+                        <input
+                            type="text"
+                            [ngModel]="qrScanCodeBySession[session.id]"
+                            (ngModelChange)="qrScanCodeBySession[session.id] = $event"
+                            placeholder="ELK-IN-... or ELK-OUT-..."
+                        />
+                    </div>
+                    <div class="action-buttons">
+                        <button
+                            type="button"
+                            (click)="markSessionCompleted(session.id)"
+                            [disabled]="sessionActionState[session.id] === 'Completed'"
+                        >
+                            Mark Completed
+                        </button>
+                        <button
+                            type="button"
+                            class="secondary"
+                            (click)="requestReschedule(session.id)"
+                            [disabled]="sessionActionState[session.id] === 'Completed'"
+                        >
+                            Request Reschedule
+                        </button>
+                        <button
+                            type="button"
+                            class="secondary"
+                            (click)="markAttendance(session.id, 'Present')"
+                        >
+                            Mark Present
+                        </button>
+                        <button
+                            type="button"
+                            class="secondary"
+                            (click)="markAttendance(session.id, 'Absent')"
+                        >
+                            Mark Absent
+                        </button>
+                        <button
+                            type="button"
+                            (click)="scanSignInQr(session.id)"
+                            [disabled]="sessionClockStatus(session.id) !== 'Not Started'"
+                        >
+                            Scan Sign-In QR
+                        </button>
+                        <button
+                            type="button"
+                            class="secondary"
+                            (click)="scanSignOutQr(session.id)"
+                            [disabled]="sessionClockStatus(session.id) !== 'In Progress'"
+                        >
+                            Scan Sign-Out QR
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </article>
+    </div>
+
+    <article class="panel tutor-ops-panel">
+        <h4>Payroll Transfer</h4>
+        <div class="transfer-row">
+            <span>Hours ready ({{ monthLabel(selectedMonthKey) }}): {{ monthlyCompletedHours }} h</span>
+            <span>Status: {{ payrollTransferState[currentTutorId] }}</span>
+            <button
+                type="button"
+                (click)="transferTutorHours()"
+                [disabled]="payrollTransferState[currentTutorId] === 'Transferred'"
+            >
+                Transfer to Payroll
+            </button>
+        </div>
+    </article>
+</section>

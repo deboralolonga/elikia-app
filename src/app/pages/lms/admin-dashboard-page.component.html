@@ -1,0 +1,86 @@
+<section class="admin-dashboard">
+    <div class="headline">
+        <div>
+            <p class="eyebrow">Admin Dashboard</p>
+            <h3>Operations snapshot for this week</h3>
+            <div class="viewer-badge" *ngIf="signedInUser as user">
+                <span class="label">Signed in as</span>
+                <strong>{{ user.name }}</strong>
+                <span class="role">{{ user.role | titlecase }}</span>
+            </div>
+        </div>
+        <div class="today-chip">Sessions today: <strong>{{ sessionsToday }}</strong></div>
+    </div>
+
+    <div class="stats-grid">
+        <article class="stat-card" [ngClass]="card.tone" *ngFor="let card of statCards">
+            <p>{{ card.label }}</p>
+            <h4>{{ card.value }}</h4>
+        </article>
+    </div>
+
+    <div class="quick-actions">
+        <button type="button" (click)="sendWeeklyDigest()">Send Weekly Digest</button>
+        <button type="button" (click)="publishTimetable()">Publish Timetable Update</button>
+        <p *ngIf="bulkActionNote">{{ bulkActionNote }}</p>
+    </div>
+
+    <div class="content-grid">
+        <article class="panel">
+            <div class="panel-title">
+                <h4>Upcoming Sessions</h4>
+                <span>{{ upcomingSessions.length }} planned</span>
+            </div>
+
+            <div class="session-list">
+                <div class="session-item" *ngFor="let session of upcomingSessions | slice:0:7">
+                    <div>
+                        <h5>{{ session.subject }}</h5>
+                        <p>{{ studentName(session.studentId) }} • {{ tutorName(session.tutorId) }}</p>
+                        <span class="action-message" [class.cancelled]="sessionActionState[session.id] === 'Cancelled'">
+                            {{ sessionActionMessage[session.id] }}
+                        </span>
+                    </div>
+                    <div class="meta">
+                        <span>{{ dateLabel(session.startAt) }}</span>
+                        <span>{{ session.location }}</span>
+                        <div class="action-buttons">
+                            <button
+                                type="button"
+                                (click)="confirmSession(session.id)"
+                                [disabled]="sessionActionState[session.id] === 'Cancelled'"
+                            >
+                                Confirm
+                            </button>
+                            <button
+                                type="button"
+                                class="danger"
+                                (click)="cancelSession(session.id)"
+                                [disabled]="sessionActionState[session.id] === 'Cancelled'"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="panel">
+            <div class="panel-title">
+                <h4>Recent Activity</h4>
+                <span>Last updates</span>
+            </div>
+
+            <div class="activity-list">
+                <div class="activity-item" *ngFor="let activity of recentActivity">
+                    <span class="dot"></span>
+                    <div>
+                        <h5>{{ activity.message }}</h5>
+                        <p>{{ activity.actor }} • {{ dateLabel(activity.timestamp) }}</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>

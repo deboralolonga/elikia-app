@@ -1,0 +1,92 @@
+<section class="scheduling-page">
+    <div class="header-row">
+        <div>
+            <p class="eyebrow">Scheduling</p>
+            <h3>Weekly timetable and assignments</h3>
+        </div>
+        <div class="summary">{{ upcoming.length }} upcoming sessions</div>
+    </div>
+
+    <div class="week-grid">
+        <article class="day-card" *ngFor="let day of weeklyCalendar">
+            <div class="day-head">
+                <div>
+                    <h4>{{ day.label }}</h4>
+                    <small>{{ day.dateLabel }}</small>
+                </div>
+                <span>{{ day.sessions.length }} sessions</span>
+            </div>
+
+            <div class="session-list" *ngIf="day.sessions.length > 0; else emptyDay">
+                <div class="session-item" *ngFor="let session of day.sessions">
+                    <h5>{{ session.subject }}</h5>
+                    <p>{{ studentName(session.studentId) }} with {{ tutorName(session.tutorId) }}</p>
+                    <div class="meta">
+                        <span>{{ dateLabel(session.startAt) }}</span>
+                        <span>{{ session.location }}</span>
+                    </div>
+                    <p class="material-note" *ngIf="session.location === 'Online'">
+                        Support de cours (material): Bientot disponible.
+                    </p>
+                </div>
+            </div>
+
+            <ng-template #emptyDay>
+                <p class="empty">No sessions assigned.</p>
+            </ng-template>
+        </article>
+    </div>
+
+    <article class="upcoming-panel">
+        <h4>Upcoming Session Queue</h4>
+        <ul>
+            <li *ngFor="let session of upcoming">
+                <span>{{ dateLabel(session.startAt) }}</span>
+                <strong>{{ tutorName(session.tutorId) }}</strong>
+                <span>{{ studentName(session.studentId) }}</span>
+                <span>{{ session.subject }}</span>
+                <span class="attendance" [class.ok]="attendanceState[session.id] === 'Present'" [class.warn]="attendanceState[session.id] === 'Absent'">
+                    {{ attendanceState[session.id] }}
+                </span>
+                <div class="attendance-actions">
+                    <button type="button" (click)="markAttendance(session.id, 'Present')">Present</button>
+                    <button type="button" class="secondary" (click)="markAttendance(session.id, 'Absent')">Absent</button>
+                    <button type="button" class="secondary" (click)="markAttendance(session.id, 'Excused')">Excused</button>
+                </div>
+                <small>{{ attendanceNote[session.id] }}</small>
+            </li>
+        </ul>
+    </article>
+
+    <div class="transfer-grid">
+        <article class="upcoming-panel">
+            <h4>Transfer Client Hours to Billing</h4>
+            <ul>
+                <li *ngFor="let row of clientBillingRows">
+                    <strong>{{ row.parentName }}</strong>
+                    <span>{{ row.hours }} h</span>
+                    <span>{{ billingTransferState[row.parentId] }}</span>
+                    <button type="button" (click)="transferClientHours(row.parentId)" [disabled]="billingTransferState[row.parentId] === 'Transferred'">
+                        Transfer to Billing
+                    </button>
+                </li>
+            </ul>
+        </article>
+
+        <article class="upcoming-panel">
+            <h4>Transfer Tutor Hours to Payroll</h4>
+            <ul>
+                <li *ngFor="let row of tutorPayrollRows">
+                    <strong>{{ row.tutorName }}</strong>
+                    <span>{{ row.hours }} h</span>
+                    <span>{{ payrollTransferState[row.tutorId] }}</span>
+                    <button type="button" (click)="transferTutorHours(row.tutorId)" [disabled]="payrollTransferState[row.tutorId] === 'Transferred'">
+                        Transfer to Payroll
+                    </button>
+                </li>
+            </ul>
+        </article>
+    </div>
+
+    <p class="transfer-note" *ngIf="transferNote">{{ transferNote }}</p>
+</section>

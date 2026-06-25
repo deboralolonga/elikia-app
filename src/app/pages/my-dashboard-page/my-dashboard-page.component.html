@@ -8,9 +8,9 @@
         <div class="page-title-content">
             <ul>
                 <li><a routerLink="/">Home</a></li>
-                <li>My Dashboard</li>
+                <li>Elikia Dashboard</li>
             </ul>
-            <h2>My Dashboard</h2>
+            <h2>Elikia Learning Dashboard</h2>
         </div>
     </div>
 </div>
@@ -24,17 +24,17 @@
             <div class="row align-items-center">
                 <div class="col-lg-4 col-md-5">
                     <div class="profile-image">
-                        <img src="images/instructor/instructor1.jpg" alt="image">
+                        <img src="images/elikia-logo.png" alt="Elikia logo">
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-7">
                     <div class="profile-content">
-                        <h3>James Anderson</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore atque officiis maxime suscipit expedita obcaecati nulla in ducimus.</p>
+                        <h3>Elikia French4All Learning Centre</h3>
+                        <p>This client-ready MVP dashboard showcases how Elikia can manage tutors, students, parent communication, and weekly French learning sessions.</p>
                         <ul class="contact-info">
-                            <li><i class='bx bx-envelope'></i> <a href="mailto:hello&#64;jamesanderson.com">hello&#64;jamesanderson.com</a></li>
-                            <li><i class='bx bx-phone'></i> <a href="tel:+502464674">+502 464 674</a></li>
-                            <li><i class='bx bx-world'></i> <a href="#" target="_blank">www.jamesanderson.com</a></li>
+                            <li><i class='bx bx-envelope'></i> <a href="mailto:contact&#64;elikia-cf.com">contact&#64;elikia-cf.com</a></li>
+                            <li><i class='bx bx-phone'></i> <a href="https://wa.me/+27810772353">+27 810 77 2353</a></li>
+                            <li><i class='bx bx-world'></i> <a href="https://elikia-cf.com" target="_blank">www.elikia-cf.com</a></li>
                         </ul>
                         <ul class="social">
                             <li><a href="#" class="d-block" target="_blank"><i class='bx bxl-facebook'></i></a></li>
@@ -43,82 +43,62 @@
                             <li><a href="#" class="d-block" target="_blank"><i class='bx bxl-linkedin'></i></a></li>
                             <li><a href="#" class="d-block" target="_blank"><i class='bx bxl-pinterest-alt'></i></a></li>
                         </ul>
-                        <a routerLink="/" class="myDashboard-logout">Logout</a>
+                        <a routerLink="/learning-centre" class="myDashboard-logout">Open Learning Centre MVP</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="myDashboard-navigation">
             <ul>
-                <li><a routerLink="/my-dashboard" class="active"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
-                <li><a routerLink="/orders"><i class='bx bx-cart'></i> Orders</a></li>
-                <li><a routerLink="/downloads"><i class='bx bx-download'></i> Downloads</a></li>
-                <li><a routerLink="/edit-address"><i class='bx bx-home-alt'></i> Addresses</a></li>
-                <li><a routerLink="/edit-account"><i class='bx bx-edit'></i> Account Details</a></li>
-                <li><a routerLink="/"><i class='bx bx-log-out'></i> Logout</a></li>
+                <li><a routerLink="/my-dashboard" class="active"><i class='bx bxs-dashboard'></i> MVP Overview</a></li>
+                <li><a routerLink="/learning-centre/admin"><i class='bx bx-shield-quarter'></i> Admin</a></li>
+                <li><a routerLink="/learning-centre/tutors"><i class='bx bx-user-voice'></i> Tutors</a></li>
+                <li><a routerLink="/learning-centre/students"><i class='bx bx-group'></i> Students</a></li>
+                <li><a routerLink="/learning-centre/scheduling"><i class='bx bx-calendar'></i> Scheduling</a></li>
             </ul>
         </div>
         <div class="myDashboard-content">
-            <p>Hello <strong>James Anderson</strong> (not <strong>James Anderson</strong>? <a routerLink="/my-dashboard">Log out</a>)</p>
-            <p>From your account dashboard you can view your <a routerLink="/orders">recent orders</a>, manage your <a routerLink="/edit-address">shipping and billing addresses</a>, <a routerLink="/edit-account">edit your password</a>, and <a routerLink="/edit-account">account details</a>.</p>
-            <h3>Recent Orders</h3>
+            <p>
+                Welcome to the Elikia operations cockpit. Use this page to present the full Learning Centre workflow for
+                <strong>Admin</strong>, <strong>Tutor</strong>, and <strong>Parent</strong> personas.
+            </p>
+
+            <div class="role-card-grid">
+                <article class="role-card" *ngFor="let role of roleCards">
+                    <h4>{{ role.title }}</h4>
+                    <p>{{ role.description }}</p>
+                    <a [routerLink]="role.route">{{ role.cta }}</a>
+                </article>
+            </div>
+
+            <h3>Upcoming French Learning Sessions</h3>
             <div class="recent-orders-table table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Order</th>
+                            <th>Learner</th>
+                            <th>Tutor</th>
+                            <th>Program</th>
                             <th>Date</th>
                             <th>Status</th>
-                            <th>Total</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#074145O5</td>
-                            <td>October 18, 2025</td>
-                            <td>Completed</td>
-                            <td>$49.00 for 1 item</td>
-                            <td><a routerLink="/single-course" class="view-button">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>#074145O6</td>
-                            <td>October 18, 2025</td>
-                            <td>On Hold</td>
-                            <td>$49.00 for 1 item</td>
-                            <td><a routerLink="/single-course" class="view-button">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>#074145O7</td>
-                            <td>October 18, 2025</td>
-                            <td>Completed</td>
-                            <td>$49.00 for 1 item</td>
-                            <td><a routerLink="/single-course" class="view-button">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>#074145O5</td>
-                            <td>October 18, 2025</td>
-                            <td>Completed</td>
-                            <td>$49.00 for 1 item</td>
-                            <td><a routerLink="/single-course" class="view-button">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>#074145O6</td>
-                            <td>October 18, 2025</td>
-                            <td>On Hold</td>
-                            <td>$49.00 for 1 item</td>
-                            <td><a routerLink="/single-course" class="view-button">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>#074145O7</td>
-                            <td>October 18, 2025</td>
-                            <td>Completed</td>
-                            <td>$49.00 for 1 item</td>
-                            <td><a routerLink="/single-course" class="view-button">View</a></td>
+                        <tr *ngFor="let session of upcomingSessions">
+                            <td>{{ session.learner }}</td>
+                            <td>{{ session.tutor }}</td>
+                            <td>{{ session.program }}</td>
+                            <td>{{ session.dateLabel }}</td>
+                            <td>{{ session.status }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
+            <h3>Recent Activity</h3>
+            <ul class="elikia-activity-list">
+                <li *ngFor="let activity of recentActivity">{{ activity }}</li>
+            </ul>
         </div>
     </div>
 </div>

@@ -1,0 +1,85 @@
+<app-header-style-two></app-header-style-two>
+
+<div
+    class="page-title-area"
+    style="background-image: url(images/page-title/page-title1.jpg);"
+>
+    <div class="container">
+        <div class="page-title-content">
+            <ul>
+                <li><a routerLink="/">Home</a></li>
+                <li>Learning Centre</li>
+            </ul>
+            <h2>Elikia Learning Centre</h2>
+        </div>
+    </div>
+</div>
+
+<section
+    class="lms-hub-area ptb-100"
+    [class.dark-lms-hub-area]="themeService.isDark()"
+>
+    <div class="container">
+        <div class="lms-layout">
+            <aside class="sidebar">
+                <div class="brand">
+                    <p class="eyebrow">Elikia French4All</p>
+                    <h3>Learning Centre Demo</h3>
+                    <p class="subtitle">A modern workflow for Admin, Tutors, and Parents, aligned with Elikia branding.</p>
+                </div>
+
+                <div class="account-chip" *ngIf="authService.currentUser() as user">
+                    <p class="name">{{ user.name }}</p>
+                    <span>{{ user.role | titlecase }}</span>
+                </div>
+
+                <div class="jurisdiction-chip">
+                    <p>Active Jurisdiction</p>
+                    <strong>{{ jurisdictionLabel(activeJurisdiction) }}</strong>
+                </div>
+
+                <div class="jurisdiction-switcher" *ngIf="canSwitchJurisdiction">
+                    <p class="label">Switch Jurisdiction</p>
+                    <div class="switcher-grid">
+                        <button
+                            type="button"
+                            *ngFor="let jurisdiction of jurisdictionOptions"
+                            [class.active]="jurisdiction === activeJurisdiction"
+                            (click)="switchJurisdiction(jurisdiction)"
+                        >
+                            {{ jurisdictionLabel(jurisdiction) }}
+                        </button>
+                    </div>
+                </div>
+
+                <nav class="nav-links">
+                    <a
+                        *ngFor="let item of visibleNavItems"
+                        [routerLink]="item.route"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                    >
+                        {{ item.label }}
+                    </a>
+                </nav>
+
+                <div class="pill-group">
+                    <span>Mock Data</span>
+                    <span>Role Protected</span>
+                    <button type="button" class="logout-btn" (click)="logout()">Logout</button>
+                </div>
+            </aside>
+
+            <main class="content-area">
+                <header class="topbar">
+                    <h2>Learning Centre Management System</h2>
+                    <a [routerLink]="dashboardHomeRoute" class="home-link">Back to dashboard</a>
+                </header>
+
+                <div class="page-host">
+                    <router-outlet />
+                </div>
+            </main>
+        </div>
+    </div>
+</section>

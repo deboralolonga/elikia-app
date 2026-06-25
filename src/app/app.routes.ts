@@ -45,6 +45,13 @@ import { CoursesGstcThreePageComponent } from './pages/courses-gstc-three-page/c
 import { CoursesGstcFourPageComponent } from './pages/courses-gstc-four-page/courses-gstc-four-page.component';
 import { CoursesDetailsPageComponent } from './pages/courses-details-page/courses-details-page.component';
 import { MyDashboardPageComponent } from './pages/my-dashboard-page/my-dashboard-page.component';
+import { LmsShellPageComponent } from './pages/lms/lms-shell-page.component';
+import { AdminDashboardPageComponent } from './pages/lms/admin-dashboard-page.component';
+import { TutorsPageComponent } from './pages/lms/tutors-page.component';
+import { StudentsPageComponent } from './pages/lms/students-page.component';
+import { SchedulingPageComponent } from './pages/lms/scheduling-page.component';
+import { TutorDashboardPageComponent } from './pages/lms/tutor-dashboard-page.component';
+import { ParentDashboardPageComponent } from './pages/lms/parent-dashboard-page.component';
 import { OrdersPageComponent } from './pages/orders-page/orders-page.component';
 import { DownloadsPageComponent } from './pages/downloads-page/downloads-page.component';
 import { EditAddressPageComponent } from './pages/edit-address-page/edit-address-page.component';
@@ -61,6 +68,7 @@ import { ProductsDetailsPageComponent } from './pages/products-details-page/prod
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
+import { authGuard, guestOnlyGuard, roleGuard } from './auth/auth.guards';
 
 export const routes: Routes = [
     {path: 'online-education-portal', component: OnlineEducationPortalComponent},
@@ -89,7 +97,7 @@ export const routes: Routes = [
     {path: 'pricing', component: PricingPageComponent},
     {path: 'feedback', component: FeedbackPageComponent},
     {path: 'partner', component: PartnerPageComponent},
-    {path: 'login', component: LoginPageComponent},
+    {path: 'login', component: LoginPageComponent, canActivate: [guestOnlyGuard]},
     {path: 'register', component: RegisterPageComponent},
     {path: 'faqs', component: FaqPageComponent},
     {path: 'coming-soon', component: ComingSoonPageComponent},
@@ -108,6 +116,50 @@ export const routes: Routes = [
     {path: 'courses-4-columns-style-3', component: CoursesGstcFourPageComponent},
     {path: 'single-course', component: CoursesDetailsPageComponent},
     {path: 'my-dashboard', component: MyDashboardPageComponent},
+    {
+        path: 'learning-centre',
+        component: LmsShellPageComponent,
+        canActivate: [authGuard],
+        children: [
+            { path: '', redirectTo: 'admin', pathMatch: 'full' },
+            {
+                path: 'admin',
+                component: AdminDashboardPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'tutors',
+                component: TutorsPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'students',
+                component: StudentsPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'scheduling',
+                component: SchedulingPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'tutor-dashboard',
+                component: TutorDashboardPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['tutor', 'admin'] }
+            },
+            {
+                path: 'parent-dashboard',
+                component: ParentDashboardPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['parent', 'admin'] }
+            }
+        ]
+    },
     {path: 'orders', component: OrdersPageComponent},
     {path: 'downloads', component: DownloadsPageComponent},
     {path: 'edit-address', component: EditAddressPageComponent},
