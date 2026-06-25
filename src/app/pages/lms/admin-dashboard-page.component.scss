@@ -27,6 +27,35 @@
             color: var(--paragraphColor);
             background: var(--whiteColor);
         }
+
+        .viewer-badge {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #d9efe6;
+            border-radius: 999px;
+            padding: 5px 11px;
+            background: #f4fbf8;
+
+            .label {
+                font-size: 11px;
+                color: var(--paragraphColor);
+            }
+
+            strong {
+                font-size: 12px;
+                color: var(--blackColor);
+            }
+
+            .role {
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--mainColor2);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+        }
     }
 }
 

@@ -1,8 +1,9 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { ThemeCustomizerService } from '../theme-customizer/theme-customizer.service';
 import { NgClass } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AppLanguage, LanguageService } from '../language/language.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-header-style-two',
@@ -15,6 +16,8 @@ export class HeaderStyleTwoComponent {
     /** Expose service publicly so templates call lang.t('key') directly */
     readonly lang = inject(LanguageService);
     readonly themeService = inject(ThemeCustomizerService);
+    readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
 
     readonly languages: Record<AppLanguage, { shortLabel: string; flag: string; alt: string }> = {
         en: {
@@ -64,6 +67,20 @@ export class HeaderStyleTwoComponent {
     classApplied3 = false;
     toggleClass3() {
         this.classApplied3 = !this.classApplied3;
+    }
+
+    get isAuthenticated(): boolean {
+        return this.authService.isAuthenticated();
+    }
+
+    get dashboardLink(): string {
+        return this.authService.defaultDashboardRoute();
+    }
+
+    onLogout(): void {
+        this.authService.logout();
+        this.classApplied = false;
+        void this.router.navigate(['/']);
     }
 
 }

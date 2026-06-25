@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { STUDENTS, TUTORS, studentById } from './data/lms.mock-data';
+import { studentsByJurisdiction, studentById, tutorsByJurisdiction } from './data/lms.mock-data';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-tutors-page',
@@ -11,8 +12,15 @@ import { STUDENTS, TUTORS, studentById } from './data/lms.mock-data';
 })
 export class TutorsPageComponent {
 
-    readonly tutors = TUTORS;
-    readonly totalAssigned = STUDENTS.length;
+    readonly activeJurisdiction: 'ZA' | 'KE';
+    readonly tutors;
+    readonly totalAssigned: number;
+
+    constructor(private readonly authService: AuthService) {
+        this.activeJurisdiction = this.authService.activeJurisdiction();
+        this.tutors = tutorsByJurisdiction(this.activeJurisdiction);
+        this.totalAssigned = studentsByJurisdiction(this.activeJurisdiction).length;
+    }
 
     assignedStudents(studentIds: number[]): string[] {
         return studentIds.map((id) => studentById(id)?.name ?? 'Unknown Student');

@@ -3,6 +3,11 @@
         <div>
             <p class="eyebrow">Parent Dashboard</p>
             <h3>Hello {{ profile.name }}</h3>
+            <div class="viewer-badge">
+                <span class="label">Signed in as</span>
+                <strong>{{ signedInUserName }}</strong>
+                <span class="role">{{ signedInRole }}</span>
+            </div>
         </div>
         <div class="contact">{{ profile.phone }} • {{ profile.email }}</div>
     </div>
@@ -23,6 +28,65 @@
     </div>
 
     <p class="action-note" *ngIf="parentActionNote">{{ parentActionNote }}</p>
+
+    <article class="panel monthly-summary-panel">
+        <div class="panel-head">
+            <h4>Monthly Hours and Billing</h4>
+            <label>
+                Period
+                <select [ngModel]="selectedMonthKey" (ngModelChange)="onMonthChange($event)">
+                    <option *ngFor="let month of monthOptions" [value]="month">{{ monthLabel(month) }}</option>
+                </select>
+            </label>
+        </div>
+        <div class="summary-grid">
+            <div>
+                <p>Hours done</p>
+                <strong>{{ monthlyCompletedHours }} h</strong>
+            </div>
+            <div>
+                <p>Amount owed</p>
+                <strong>{{ formatCurrency(monthlyBillingOwed) }}</strong>
+            </div>
+            <div>
+                <p>Pending billing</p>
+                <strong>{{ formatCurrency(monthlyBillingPending) }}</strong>
+            </div>
+        </div>
+    </article>
+
+    <article class="panel weekly-calendar-panel">
+        <h4>Weekly Calendar</h4>
+        <div class="calendar-grid">
+            <div class="day-column" *ngFor="let day of weeklyCalendar">
+                <div class="day-head">
+                    <strong>{{ day.label }}</strong>
+                    <span>{{ day.dateLabel }}</span>
+                </div>
+                <div class="day-body" *ngIf="day.sessions.length; else noParentSession">
+                    <div class="session-card" *ngFor="let session of day.sessions">
+                        <p class="time">{{ sessionTime(session.startAt) }}</p>
+                        <p class="topic">{{ session.subject }}</p>
+                        <span>{{ studentName(session.studentId) }} • {{ tutorName(session.tutorId) }}</span>
+                    </div>
+                </div>
+                <ng-template #noParentSession>
+                    <p class="empty-day">No sessions</p>
+                </ng-template>
+            </div>
+        </div>
+    </article>
+
+    <article class="panel parent-ops-panel">
+        <h4>Online Class Materials</h4>
+        <ul class="ops-list">
+            <li *ngFor="let session of myOnlineSessions">
+                <strong>{{ session.subject }}</strong>
+                <span>{{ dateLabel(session.startAt) }} • {{ tutorName(session.tutorId) }}</span>
+                <small>Support de cours (material): Bientot disponible</small>
+            </li>
+        </ul>
+    </article>
 
     <div class="content-grid">
         <article class="panel">
@@ -46,6 +110,23 @@
                     <span class="state" [class.warn]="upcomingActionState[session.id] === 'Makeup Requested'">
                         {{ upcomingActionState[session.id] }}
                     </span>
+                    <span class="clock-state">Session clock: {{ sessionClockStatus(session.id) }}</span>
+                    <span class="clock-hours">Tracked hours: {{ trackedSessionHours(session.id) }} h</span>
+                    <span class="attendance-state">Attendance: {{ attendanceStatus(session.id) }}</span>
+                    <small class="attendance-note">{{ attendanceNote(session.id) }}</small>
+                    <div class="qr-display">
+                        <p>Parent QR for tutor timesheet replacement</p>
+                        <div class="qr-codes">
+                            <div class="qr-code-box">
+                                <span>Sign-In QR</span>
+                                <code>{{ signInQrCode(session.id) }}</code>
+                            </div>
+                            <div class="qr-code-box">
+                                <span>Sign-Out QR</span>
+                                <code>{{ signOutQrCode(session.id) }}</code>
+                            </div>
+                        </div>
+                    </div>
                     <div class="action-buttons">
                         <button
                             type="button"
@@ -80,5 +161,21 @@
                 </button>
             </li>
         </ul>
+    </article>
+
+    <article class="panel parent-ops-panel">
+        <h4>Client Billing Transfer</h4>
+        <div class="transfer-row">
+            <span>Hours completed ({{ monthLabel(selectedMonthKey) }}): {{ monthlyCompletedHours }} h</span>
+            <span>Status: {{ billingTransferState[currentParentId] }}</span>
+            <button
+                type="button"
+                class="transfer-btn"
+                (click)="transferClientHours()"
+                [disabled]="billingTransferState[currentParentId] === 'Transferred'"
+            >
+                Transfer to Billing
+            </button>
+        </div>
     </article>
 </section>

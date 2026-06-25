@@ -68,6 +68,7 @@ import { ProductsDetailsPageComponent } from './pages/products-details-page/prod
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
 import { ContactPageComponent } from './pages/contact-page/contact-page.component';
+import { authGuard, guestOnlyGuard, roleGuard } from './auth/auth.guards';
 
 export const routes: Routes = [
     {path: 'online-education-portal', component: OnlineEducationPortalComponent},
@@ -96,7 +97,7 @@ export const routes: Routes = [
     {path: 'pricing', component: PricingPageComponent},
     {path: 'feedback', component: FeedbackPageComponent},
     {path: 'partner', component: PartnerPageComponent},
-    {path: 'login', component: LoginPageComponent},
+    {path: 'login', component: LoginPageComponent, canActivate: [guestOnlyGuard]},
     {path: 'register', component: RegisterPageComponent},
     {path: 'faqs', component: FaqPageComponent},
     {path: 'coming-soon', component: ComingSoonPageComponent},
@@ -118,14 +119,45 @@ export const routes: Routes = [
     {
         path: 'learning-centre',
         component: LmsShellPageComponent,
+        canActivate: [authGuard],
         children: [
             { path: '', redirectTo: 'admin', pathMatch: 'full' },
-            { path: 'admin', component: AdminDashboardPageComponent },
-            { path: 'tutors', component: TutorsPageComponent },
-            { path: 'students', component: StudentsPageComponent },
-            { path: 'scheduling', component: SchedulingPageComponent },
-            { path: 'tutor-dashboard', component: TutorDashboardPageComponent },
-            { path: 'parent-dashboard', component: ParentDashboardPageComponent }
+            {
+                path: 'admin',
+                component: AdminDashboardPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'tutors',
+                component: TutorsPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'students',
+                component: StudentsPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'scheduling',
+                component: SchedulingPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['admin'] }
+            },
+            {
+                path: 'tutor-dashboard',
+                component: TutorDashboardPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['tutor', 'admin'] }
+            },
+            {
+                path: 'parent-dashboard',
+                component: ParentDashboardPageComponent,
+                canActivate: [roleGuard],
+                data: { roles: ['parent', 'admin'] }
+            }
         ]
     },
     {path: 'orders', component: OrdersPageComponent},

@@ -1,1 +1,11 @@
 @use '../header-style-one/header-style-one.component' as headerStyleOne;
+
+.mobile-auth-item {
+	display: none;
+}
+
+@media only screen and (max-width: 991px) {
+	.mobile-auth-item {
+		display: list-item;
+	}
+}

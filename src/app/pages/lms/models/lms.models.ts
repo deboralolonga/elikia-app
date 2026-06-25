@@ -1,10 +1,15 @@
+import { JurisdictionCode } from '../../../auth/auth.models';
+
 export type SessionStatus = 'Scheduled' | 'Completed' | 'Cancelled';
 
 export interface Tutor {
     id: number;
+    jurisdiction: JurisdictionCode;
     name: string;
     email: string;
     phone: string;
+    payrollRatePerHour: number;
+    billingRatePerHour: number;
     specialties: string[];
     availability: string[];
     assignedStudentIds: number[];
@@ -14,6 +19,7 @@ export interface Tutor {
 
 export interface Parent {
     id: number;
+    jurisdiction: JurisdictionCode;
     name: string;
     email: string;
     phone: string;
@@ -22,6 +28,7 @@ export interface Parent {
 
 export interface Student {
     id: number;
+    jurisdiction: JurisdictionCode;
     name: string;
     age: number;
     level: string;
@@ -32,6 +39,7 @@ export interface Student {
 
 export interface LearningSession {
     id: number;
+    jurisdiction: JurisdictionCode;
     studentId: number;
     tutorId: number;
     subject: string;
@@ -43,6 +51,7 @@ export interface LearningSession {
 
 export interface ActivityItem {
     id: number;
+    jurisdiction: JurisdictionCode;
     type: 'Session' | 'Enrollment' | 'Tutor' | 'Payment';
     message: string;
     timestamp: string;

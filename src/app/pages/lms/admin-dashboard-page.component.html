@@ -3,6 +3,11 @@
         <div>
             <p class="eyebrow">Admin Dashboard</p>
             <h3>Operations snapshot for this week</h3>
+            <div class="viewer-badge" *ngIf="signedInUser as user">
+                <span class="label">Signed in as</span>
+                <strong>{{ user.name }}</strong>
+                <span class="role">{{ user.role | titlecase }}</span>
+            </div>
         </div>
         <div class="today-chip">Sessions today: <strong>{{ sessionsToday }}</strong></div>
     </div>

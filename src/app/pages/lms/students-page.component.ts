@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { PARENTS, STUDENTS, TUTORS, parentById, tutorById } from './data/lms.mock-data';
+import { parentById, parentsByJurisdiction, studentsByJurisdiction, tutorById, tutorsByJurisdiction } from './data/lms.mock-data';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-students-page',
@@ -11,9 +12,17 @@ import { PARENTS, STUDENTS, TUTORS, parentById, tutorById } from './data/lms.moc
 })
 export class StudentsPageComponent {
 
-    readonly students = STUDENTS;
-    readonly parentsCount = PARENTS.length;
-    readonly tutorsCount = TUTORS.length;
+    readonly activeJurisdiction: 'ZA' | 'KE';
+    readonly students;
+    readonly parentsCount: number;
+    readonly tutorsCount: number;
+
+    constructor(private readonly authService: AuthService) {
+        this.activeJurisdiction = this.authService.activeJurisdiction();
+        this.students = studentsByJurisdiction(this.activeJurisdiction);
+        this.parentsCount = parentsByJurisdiction(this.activeJurisdiction).length;
+        this.tutorsCount = tutorsByJurisdiction(this.activeJurisdiction).length;
+    }
 
     parentName(parentId: number): string {
         return parentById(parentId)?.name ?? 'Unknown Parent';

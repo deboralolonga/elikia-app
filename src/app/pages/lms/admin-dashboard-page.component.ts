@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
-    ACTIVITIES,
-    PARENTS,
-    STUDENTS,
-    TUTORS,
+    activitiesByJurisdiction,
+    parentsByJurisdiction,
+    studentsByJurisdiction,
+    tutorsByJurisdiction,
     formatDateTime,
     getUpcomingSessions,
     studentById,
     tutorById
 } from './data/lms.mock-data';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-admin-dashboard-page',
@@ -20,30 +21,44 @@ import {
 })
 export class AdminDashboardPageComponent {
 
-    readonly totalTutors = TUTORS.length;
-    readonly totalParents = PARENTS.length;
-    readonly totalStudents = STUDENTS.length;
-    readonly upcomingSessions = getUpcomingSessions().map((session) => ({ ...session }));
-    readonly recentActivity = [...ACTIVITIES];
+    readonly signedInUser;
+    readonly activeJurisdiction: 'ZA' | 'KE';
+
+    readonly totalTutors: number;
+    readonly totalParents: number;
+    readonly totalStudents: number;
+    readonly upcomingSessions;
+    readonly recentActivity;
 
     readonly sessionActionState: Record<number, 'Pending' | 'Confirmed' | 'Cancelled'> = {};
     readonly sessionActionMessage: Record<number, string> = {};
 
     bulkActionNote = '';
 
-    readonly statCards = [
-        { label: 'Total Tutors', value: this.totalTutors, tone: 'teal' },
-        { label: 'Total Parents', value: this.totalParents, tone: 'orange' },
-        { label: 'Total Students', value: this.totalStudents, tone: 'sky' },
-        { label: 'Upcoming Sessions', value: this.upcomingSessions.length, tone: 'indigo' }
-    ];
+    readonly statCards;
+    readonly sessionsToday: number;
 
-    readonly sessionsToday = this.upcomingSessions.filter((session) => {
-        const sessionDate = new Date(session.startAt).toDateString();
-        return sessionDate === new Date().toDateString();
-    }).length;
+    constructor(private readonly authService: AuthService) {
+        this.signedInUser = this.authService.currentUser();
+        this.activeJurisdiction = this.authService.activeJurisdiction();
+        this.totalTutors = tutorsByJurisdiction(this.activeJurisdiction).length;
+        this.totalParents = parentsByJurisdiction(this.activeJurisdiction).length;
+        this.totalStudents = studentsByJurisdiction(this.activeJurisdiction).length;
+        this.upcomingSessions = getUpcomingSessions(this.activeJurisdiction).map((session) => ({ ...session }));
+        this.recentActivity = [...activitiesByJurisdiction(this.activeJurisdiction)];
 
-    constructor() {
+        this.statCards = [
+            { label: 'Total Tutors', value: this.totalTutors, tone: 'teal' },
+            { label: 'Total Parents', value: this.totalParents, tone: 'orange' },
+            { label: 'Total Students', value: this.totalStudents, tone: 'sky' },
+            { label: 'Upcoming Sessions', value: this.upcomingSessions.length, tone: 'indigo' }
+        ];
+
+        this.sessionsToday = this.upcomingSessions.filter((session) => {
+            const sessionDate = new Date(session.startAt).toDateString();
+            return sessionDate === new Date().toDateString();
+        }).length;
+
         this.upcomingSessions.forEach((session) => {
             this.sessionActionState[session.id] = 'Pending';
             this.sessionActionMessage[session.id] = 'Awaiting admin action';
@@ -87,6 +102,7 @@ export class AdminDashboardPageComponent {
     private pushActivity(message: string): void {
         this.recentActivity.unshift({
             id: Date.now(),
+            jurisdiction: this.activeJurisdiction,
             type: 'Session',
             message,
             timestamp: new Date().toISOString(),

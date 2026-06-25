@@ -10,7 +10,7 @@
                 <li><a routerLink="/">Home</a></li>
                 <li>Learning Centre</li>
             </ul>
-            <h2>Elikia Learning Centre MVP</h2>
+            <h2>Elikia Learning Centre</h2>
         </div>
     </div>
 </div>
@@ -28,9 +28,33 @@
                     <p class="subtitle">A modern workflow for Admin, Tutors, and Parents, aligned with Elikia branding.</p>
                 </div>
 
+                <div class="account-chip" *ngIf="authService.currentUser() as user">
+                    <p class="name">{{ user.name }}</p>
+                    <span>{{ user.role | titlecase }}</span>
+                </div>
+
+                <div class="jurisdiction-chip">
+                    <p>Active Jurisdiction</p>
+                    <strong>{{ jurisdictionLabel(activeJurisdiction) }}</strong>
+                </div>
+
+                <div class="jurisdiction-switcher" *ngIf="canSwitchJurisdiction">
+                    <p class="label">Switch Jurisdiction</p>
+                    <div class="switcher-grid">
+                        <button
+                            type="button"
+                            *ngFor="let jurisdiction of jurisdictionOptions"
+                            [class.active]="jurisdiction === activeJurisdiction"
+                            (click)="switchJurisdiction(jurisdiction)"
+                        >
+                            {{ jurisdictionLabel(jurisdiction) }}
+                        </button>
+                    </div>
+                </div>
+
                 <nav class="nav-links">
                     <a
-                        *ngFor="let item of navItems"
+                        *ngFor="let item of visibleNavItems"
                         [routerLink]="item.route"
                         routerLinkActive="active"
                         [routerLinkActiveOptions]="{ exact: true }"
@@ -41,15 +65,15 @@
 
                 <div class="pill-group">
                     <span>Mock Data</span>
-                    <span>No Auth</span>
-                    <span>No Backend</span>
+                    <span>Role Protected</span>
+                    <button type="button" class="logout-btn" (click)="logout()">Logout</button>
                 </div>
             </aside>
 
             <main class="content-area">
                 <header class="topbar">
                     <h2>Learning Centre Management System</h2>
-                    <a routerLink="admin" class="home-link">Back to overview</a>
+                    <a [routerLink]="dashboardHomeRoute" class="home-link">Back to dashboard</a>
                 </header>
 
                 <div class="page-host">
