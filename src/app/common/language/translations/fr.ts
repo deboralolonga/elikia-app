@@ -25,7 +25,7 @@ export const fr: Record<TranslationKeys, string> = {
     aboutLi1: 'Cours de français pour enfants, adolescents, adultes et professionnels',
     aboutLi2: "Cours privés et soutien scolaire personnalisé pour les étudiants de l'école française",
     aboutLi3: "Formations sur mesure pour entreprises et professionnels travaillant avec l\'Afrique francophone",
-    aboutLocation: 'En présentiel ou en ligne à Johannesburg, Pretoria et bientôt à Nairobi.',
+    aboutLocation: 'En présentiel ou en ligne à Johannesburg, Pretoria et Nairobi.',
     aboutViewPrograms: 'Voir les programmes',
 
     // Programs / language-category section
@@ -162,7 +162,7 @@ export const fr: Record<TranslationKeys, string> = {
     // Tab1 – Training Formats overview card
     coursesFormatsOverviewTitle: 'Formats de formation',
     coursesFormatsOverviewDesc: 'Nos cours sont flexibles et accessibles :',
-    coursesFormatsLi1: 'En présentiel à Johannesburg, Pretoria et bientôt à Nairobi',
+    coursesFormatsLi1: 'En présentiel à Johannesburg, Pretoria et Nairobi',
     coursesFormatsLi2: "En ligne, depuis n'importe où",
     coursesFormatsLi3: 'Individuels ou en groupe',
     coursesFormatsLi4: 'Pour particuliers, enfants, adultes ou entreprises',
@@ -269,7 +269,7 @@ export const fr: Record<TranslationKeys, string> = {
     contactBreadcrumbContact: 'Contact',
     contactEmailBoxTitle: 'Par e-mail',
     contactLocationBoxTitle: 'Notre adresse',
-    contactLocationAddress: 'Johannesbourg, Afrique du Sud',
+    contactLocationAddress: 'Johannesbourg, Afrique du Sud et Nairobi, Kenya',
     contactCallBoxTitle: 'Par téléphone',
     contactSectionSubTitle: 'Contactez-nous',
     contactSectionTitle: 'Envoyez-nous un message',

@@ -23,7 +23,7 @@ export const en = {
     aboutLi1: 'French courses for children, teenagers, adults, and professionals',
     aboutLi2: 'Private tutoring and academic support for students in the French school system.',
     aboutLi3: 'Customized corporate training for companies and professionals working with Francophone Africa',
-    aboutLocation: 'Online or in-person in Johannesburg, Pretoria and soon in Nairobi.',
+    aboutLocation: 'Online or in-person in Johannesburg, Pretoria, and Nairobi.',
     aboutViewPrograms: 'View Programs',
 
     // Programs / language-category section
@@ -162,7 +162,7 @@ export const en = {
     // Tab1 – Training Formats overview card
     coursesFormatsOverviewTitle: 'Training Formats',
     coursesFormatsOverviewDesc: 'Our courses are flexible and accessible:',
-    coursesFormatsLi1: 'In-person in Johannesburg, Pretoria and soon in Nairobi',
+    coursesFormatsLi1: 'In-person in Johannesburg, Pretoria, and Nairobi',
     coursesFormatsLi2: 'Online, from anywhere',
     coursesFormatsLi3: 'Individual or group sessions',
     coursesFormatsLi4: 'Programs for children, adults, and corporate teams',
@@ -269,7 +269,7 @@ export const en = {
     contactBreadcrumbContact: 'Contact',
     contactEmailBoxTitle: 'Email Here',
     contactLocationBoxTitle: 'Location Here',
-    contactLocationAddress: 'Johannesburg, South Africa',
+    contactLocationAddress: 'Johannesburg, South Africa and Nairobi, Kenya',
     contactCallBoxTitle: 'Call Here',
     contactSectionSubTitle: 'Contact Us',
     contactSectionTitle: 'Drop us a Message for any Query',
